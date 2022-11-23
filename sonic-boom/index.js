@@ -26,13 +26,17 @@ export default () => {
     'voronoiNoise',
   ]
   const particleTexture = [];
-  const _loadAllTexture = async names => {
-    for(const name of names){
-        const texture = await loadKtx2TextureUrl(`${baseUrl}/textures/${name}.ktx2`);
+  (async () => {
+    for(const name of nameSpec){
+        console.log(name + 'load')
+        const texture = await loadKtx2TextureUrl(`${baseUrl}textures/${name}.ktx2`);
+        if (name === 'trail' || name === 'voronoiNoise') {
+            texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+        }
         particleTexture.push(texture);
     }
-  };
-  _loadAllTexture(nameSpec);
+  })();
+  
   
   
   
@@ -45,8 +49,8 @@ export default () => {
             currentDir = localVector.applyQuaternion(localPlayer.quaternion);
             currentDir.normalize();
             if (localPlayer.hasAction('narutoRun')){
-                    narutoRunTime ++;
-                    lastStopSw = 1;
+                narutoRunTime ++;
+                lastStopSw = 1;
             }
             else{
                 narutoRunTime = 0;
@@ -807,11 +811,9 @@ export default () => {
             material.uniforms.uTime.value = timestamp / 1000;
             if(!material.uniforms.trailTexture.value){
                 material.uniforms.trailTexture.value = particleTexture[nameSpec.indexOf('trail')];
-                material.uniforms.trailTexture.value.wrapS = material.uniforms.trailTexture.value.wrapT = THREE.RepeatWrapping;
             }
             if(!material.uniforms.voronoiNoiseTexture.value){
                 material.uniforms.voronoiNoiseTexture.value = particleTexture[nameSpec.indexOf('voronoiNoise')];
-                material.uniforms.voronoiNoiseTexture.value.wrapS = material.uniforms.voronoiNoiseTexture.value.wrapT = THREE.RepeatWrapping;
             }
             if(!material.uniforms.maskTexture.value){
                 material.uniforms.maskTexture.value = particleTexture[nameSpec.indexOf('mask')];
@@ -1525,7 +1527,7 @@ export default () => {
         let wave;
         let group = new THREE.Group();
         (async () => {
-            const u = `${baseUrl}/assets/wave3.glb`;
+            const u = `${baseUrl}assets/wave3.glb`;
             wave = await new Promise((accept, reject) => {
                 const {gltfLoader} = useLoaders();
                 gltfLoader.load(u, accept, function onprogress() {}, reject);
@@ -1793,7 +1795,7 @@ export default () => {
         let mesh = null;
         let dustGeometry = null;
         (async () => {
-            const u = `${baseUrl}/assets/smoke.glb`;
+            const u = `${baseUrl}assets/smoke.glb`;
             const dustApp = await new Promise((accept, reject) => {
                 const {gltfLoader} = useLoaders();
                 gltfLoader.load(u, accept, function onprogress() {}, reject);
