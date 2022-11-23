@@ -28,7 +28,6 @@ export default () => {
   const particleTexture = [];
   (async () => {
     for(const name of nameSpec){
-        console.log(name + 'load')
         const texture = await loadKtx2TextureUrl(`${baseUrl}textures/${name}.ktx2`);
         if (name === 'trail' || name === 'voronoiNoise') {
             texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
