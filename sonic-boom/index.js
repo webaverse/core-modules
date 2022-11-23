@@ -23,6 +23,9 @@ export default () => {
   let textureB;
   let electronicballTexture;
   let noiseMap;
+  let texture8;
+  let texture11;
+
   (async () => {
     wave2 = await loadKtx2TextureUrl(`${baseUrl}/textures/wave2.ktx2`)
     wave20 = await loadKtx2TextureUrl(`${baseUrl}/textures/wave20.ktx2`)
@@ -32,6 +35,8 @@ export default () => {
     textureB = await loadKtx2TextureUrl(`${baseUrl}/textures/b.ktx2`);
     electronicballTexture = await loadKtx2TextureUrl(`${baseUrl}/textures/electronic-ball2.ktx2`);
     noiseMap = await loadKtx2TextureUrl(`${baseUrl}/textures/noise.ktx2`);
+    texture8 = await loadKtx2TextureUrl(`${baseUrl}/textures/texture8.ktx2`);
+    texture11 = await loadKtx2TextureUrl(`${baseUrl}/textures/texture11.ktx2`);
   })();
 
     let currentDir=new THREE.Vector3();
@@ -1507,8 +1512,6 @@ export default () => {
         instGeom.setAttribute("instAngle", new THREE.InstancedBufferAttribute(new Float32Array(instAngle), 3));
         instGeom.instanceCount = num;
 
-        const textureLoader = new THREE.TextureLoader()
-        const texture = textureLoader.load(`${baseUrl}/textures/texture8.png`)
         const electricityMaterial = new THREE.ShaderMaterial({
             uniforms: {
                 sphereNum: { value: num },
@@ -1519,7 +1522,7 @@ export default () => {
                 glowIndex: { value: 0 },
                 uTexture: {
                     type: "t",
-                    value: texture
+                    value: texture8,
                 },
 
             },
@@ -1698,8 +1701,6 @@ export default () => {
         instGeom.setAttribute("instAngle", new THREE.InstancedBufferAttribute(new Float32Array(instAngle), 3));
         instGeom.instanceCount = num;
 
-        const textureLoader = new THREE.TextureLoader()
-        const texture = textureLoader.load(`${baseUrl}/textures/texture11.png`)
         const electricityMaterial = new THREE.ShaderMaterial({
             uniforms: {
                 sphereNum: { value: num },
@@ -1710,7 +1711,7 @@ export default () => {
                 glowIndex: { value: 0 },
                 uTexture: {
                     type: "t",
-                    value: texture
+                    value: texture11
                 },
 
             },
