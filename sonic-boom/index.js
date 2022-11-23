@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 import metaversefile from 'metaversefile';
-const {useApp, useFrame, useLocalPlayer, useCameraManager, useLoaders, useInternals} = metaversefile;
+const {useApp, useFrame, useLocalPlayer, useCameraManager, useLoaders, useInternals, useKtx2Util} = metaversefile;
 const baseUrl = import.meta.url.replace(/(\/)[^\/\\]*$/, '$1');
 
 export default () => {
@@ -12,6 +12,7 @@ export default () => {
   let narutoRunTime = 0; 
   let lastStopSw = 0;
 
+  const {loadKtx2TextureUrl} = useKtx2Util();
   const nameSpec = [
     'wave2',
     'wave20',
@@ -27,11 +28,7 @@ export default () => {
   const particleTexture = [];
   const _loadAllTexture = async names => {
     for(const name of names){
-        const texture = await new Promise((accept, reject) => {
-            const {ktx2Loader} = useLoaders();
-            const u = `${baseUrl}/textures/${name}.ktx2`;
-            ktx2Loader.load(u, accept, function onProgress() {}, reject);
-        });
+        const texture = await loadKtx2TextureUrl(`${baseUrl}/textures/${name}.ktx2`);
         particleTexture.push(texture);
     }
   };
